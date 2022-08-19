@@ -1,10 +1,11 @@
 import 'dotenv/config';
 import * as jwt from 'jsonwebtoken';
+import UserIn from '../../interfaces/user.interface';
 
 const secret = process.env.JWT_SECRET || 'lulabolusco';
 
 export default class Token {
-  static newToken(data: Omit<any, 'password'>): string {
+  static newToken(data: Omit<UserIn, 'password'>): string {
     const config: jwt.SignOptions = {
       algorithm: 'HS256',
       expiresIn: '1d',
