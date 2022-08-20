@@ -10,4 +10,9 @@ export default class LoginController {
     const result = await this.serviceLogin.login(email, password);
     return res.status(StatusCodes.OK).json({ token: result });
   }
+
+  static validLogin(req: Request, res: Response) {
+    const { user } = req.body;
+    return res.status(StatusCodes.OK).json({ role: user.data.role });
+  }
 }
