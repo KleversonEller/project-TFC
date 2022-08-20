@@ -1,19 +1,15 @@
 import { ErrorRequestHandler } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 const middlewareError: ErrorRequestHandler = (err, _req, res, _next) => {
-  const { name, message, details, code } = err;
+  const { status, message } = err;
+  console.log('LOOOOGGGG', message);
 
-  switch (name) {
-    case 'validationError':
-      res.status(code).json({ message: details[0].message });
-      break;
-    case 'personalError':
-      res.status(code).json({ message });
-      break;
-    default:
-      res.status(500).json({ message: 'Internal server error' });
-      break;
+  if (!status) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
   }
+
+  return res.status(status).json({ message });
 };
 
 export default middlewareError;
