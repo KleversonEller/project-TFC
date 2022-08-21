@@ -11,6 +11,8 @@ import UserIn from '../interfaces/user.interface';
 
 import { Response } from 'superagent';
 import Token from '../middleware/auth/validToken';
+import ErrorPersonal from '../middleware/personal.error';
+import { StatusCodes } from 'http-status-codes';
 
 chai.use(chaiHttp);
 
@@ -19,6 +21,15 @@ const { expect } = chai;
 const userInfo = {
   email: 'admin@admin.com',
   password: 'secret_admin',
+}
+
+const invalidUserInfo = {
+  email: 'admin@admin.com',
+}
+
+const invalidUser = {
+  email: 'admin@admin.com',
+  password: '123456'
 }
 
 describe('Testando login de usuários', () => {
@@ -31,5 +42,44 @@ describe('Testando login de usuários', () => {
         expect(response.status).to.equal(200);
 
         sinon.restore();
+      })
+
+    it('Deve retornar um erro ao fazer login passando um email ou senha invalido', async () => {
+      sinon.stub(LoginService.prototype, 'login').callsFake(() => {
+        throw new ErrorPersonal(StatusCodes.UNAUTHORIZED, 'Incorrect email or password');
+      })
+      const response = await chai.request(app)
+        .post('/login').send(invalidUser);
+
+      expect(response.status).to.equal(401);
+      expect(response.body.message).to.equal('Incorrect email or password');
+
+      sinon.restore();
+    })
+
+    it('Deve retornar um erro se nao passar um email ou senha', async () => {
+      sinon.stub(LoginService.prototype, 'login').callsFake(() => {
+        throw new ErrorPersonal(StatusCodes.BAD_REQUEST, 'All fields must be filled');
+      })
+      const response = await chai.request(app)
+        .post('/login').send(invalidUserInfo);
+
+      expect(response.status).to.equal(400);
+      expect(response.body.message).to.equal('All fields must be filled');
+
+      sinon.restore();
+    })
+
+    it('Deve retornar um erro ao passar um token invalido', async () => {
+      sinon.stub(Token, 'validToken').callsFake(() => {
+        throw new ErrorPersonal(StatusCodes.UNAUTHORIZED, 'Invalid Token');
+      })
+      const response = await chai.request(app)
+        .get('/login/validate')
+
+      expect(response.status).to.equal(401);
+      expect(response.body.message).to.equal('Invalid Token');
+
+      sinon.restore();
     })
 });
