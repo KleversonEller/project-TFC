@@ -16,4 +16,10 @@ export default class MatchesController {
     const result = await this.service.create(req.body);
     return res.status(StatusCodes.CREATED).json(result);
   }
+
+  public async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const result = await this.service.update(id);
+    return res.status(StatusCodes.OK).json(result);
+  }
 }
