@@ -3,6 +3,7 @@ import * as cors from 'cors';
 import middlewareError from './middleware/error';
 import routerLogin from './routes/login.route';
 import routerTeam from './routes/team.route';
+import routerMatches from './routes/matches.route';
 
 class App {
   public app: express.Express;
@@ -30,6 +31,7 @@ class App {
 
     this.app.use(routerLogin);
     this.app.use(routerTeam);
+    this.app.use(routerMatches);
 
     this.app.use(middlewareError);
   }
