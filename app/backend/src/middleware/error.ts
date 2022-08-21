@@ -6,7 +6,8 @@ const middlewareError: ErrorRequestHandler = (err, _req, res, _next) => {
   console.log('LOOOOGGGG', message);
 
   if (!status) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Internal server error' });
   }
 
   return res.status(status).json({ message });
