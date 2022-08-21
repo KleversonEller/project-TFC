@@ -11,4 +11,9 @@ export default class MatchesController {
     const result = await this.service.getAll();
     return res.status(StatusCodes.OK).json(result);
   }
+
+  public async create(req: Request, res: Response) {
+    const result = await this.service.create(req.body);
+    return res.status(StatusCodes.CREATED).json(result);
+  }
 }
