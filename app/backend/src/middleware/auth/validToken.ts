@@ -27,7 +27,7 @@ export default class Token {
       req.body.user = data;
       return next();
     } catch (error) {
-      throw new ErrorPersonal(StatusCodes.UNAUTHORIZED, 'Invalid Token');
+      throw new ErrorPersonal(StatusCodes.UNAUTHORIZED, 'Token must be a valid token');
     }
   }
 }

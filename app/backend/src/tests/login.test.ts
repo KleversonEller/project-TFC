@@ -72,13 +72,13 @@ describe('Testando login de usuários', () => {
 
     it('Deve retornar um erro ao passar um token invalido', async () => {
       sinon.stub(Token, 'validToken').callsFake(() => {
-        throw new ErrorPersonal(StatusCodes.UNAUTHORIZED, 'Invalid Token');
+        throw new ErrorPersonal(StatusCodes.UNAUTHORIZED, 'Token must be a valid token');
       })
       const response = await chai.request(app)
         .get('/login/validate')
 
       expect(response.status).to.equal(401);
-      expect(response.body.message).to.equal('Invalid Token');
+      expect(response.body.message).to.equal('Token must be a valid token');
 
       sinon.restore();
     })
