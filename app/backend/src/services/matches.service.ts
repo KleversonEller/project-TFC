@@ -1,3 +1,5 @@
+import { StatusCodes } from 'http-status-codes';
+import ErrorPersonal from '../middleware/personal.error';
 import Matches from '../database/models/matches';
 import Team from '../database/models/team';
 import MatchesIn from '../interfaces/matches.interface';
@@ -17,10 +19,20 @@ export default class MatchesService {
 
   public async create(data: MatchesIn) {
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = data;
-    const result = await this.model.create(
-      { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true },
-    );
-    return result;
+    if (homeTeam === awayTeam) {
+      throw new ErrorPersonal(
+        StatusCodes.UNAUTHORIZED,
+        'It is not possible to create a match with two equal teams',
+      );
+    }
+    try {
+      const result = await this.model.create(
+        { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true },
+      );
+      return result;
+    } catch (error) {
+      throw new ErrorPersonal(StatusCodes.NOT_FOUND, 'There is no team with such id!');
+    }
   }
 
   public async update(id: string) {
