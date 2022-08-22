@@ -22,4 +22,10 @@ export default class MatchesController {
     const result = await this.service.update(id);
     return res.status(StatusCodes.OK).json(result);
   }
+
+  public async updateScoreboard(req: Request, res: Response) {
+    const { id } = req.params;
+    const result = await this.service.updateScoreboard(req.body, id);
+    return res.status(StatusCodes.OK).json(result);
+  }
 }
