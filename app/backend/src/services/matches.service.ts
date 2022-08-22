@@ -39,4 +39,10 @@ export default class MatchesService {
     await this.model.update({ inProgress: false }, { where: { id } });
     return { message: 'Finished' };
   }
+
+  public async updateScoreboard(data: any, id: string) {
+    const { homeTeamGoals, awayTeamGoals } = data;
+    await this.model.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return { message: 'Updated' };
+  }
 }
