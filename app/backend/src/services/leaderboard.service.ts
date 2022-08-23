@@ -9,7 +9,7 @@ export default class LeaderBoardService {
     this.model = model;
   }
 
-  public async table() {
+  public async table(location: string) {
     const result = await this.model.findAll(
       {
         attributes: ['teamName'],
@@ -24,7 +24,7 @@ export default class LeaderBoardService {
             attributes: ['homeTeamGoals', 'awayTeamGoals'] }],
       },
     );
-    const table = Calculator.calcOrder(result, 'home');
+    const table = Calculator.calcOrder(result, location);
     return table;
   }
 }
