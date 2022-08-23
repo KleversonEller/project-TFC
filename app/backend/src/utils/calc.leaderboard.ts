@@ -25,15 +25,17 @@ export default class Calculator {
     ].length;
 
     if (location === 'home') return homeGame;
-    if (location === 'away') return homeGame;
+    if (location === 'away') return awayGame;
     return homeGame + awayGame;
   }
 
   static calcVictories(team: any, location: string) {
     const homeWin = team.homeTeam
-      .reduce((wins: any, game: any) => game.homeTeamGoals > game.awayTeamGoals && wins + 1, 0);
+      .reduce((wins: any, game: any) => (game.homeTeamGoals > game.awayTeamGoals
+        ? wins + 1 : wins + 0), 0);
     const awayWin = team.awayTeam
-      .reduce((wins: any, game: any) => game.awayTeamGoals > game.homeTeamGoals && wins + 1, 0);
+      .reduce((wins: any, game: any) => (game.awayTeamGoals > game.homeTeamGoals
+        ? wins + 1 : wins + 0), 0);
 
     switch (location) {
       case 'home':
@@ -47,9 +49,11 @@ export default class Calculator {
 
   static calcLosses(team: any, location: string) {
     const homeLose = team.homeTeam
-      .reduce((lose: any, game: any) => game.homeTeamGoals < game.awayTeamGoals && lose + 1, 0);
+      .reduce((lose: any, game: any) => (game.awayTeamGoals > game.homeTeamGoals
+        ? lose + 1 : lose + 0), 0);
     const awayLose = team.awayTeam
-      .reduce((lose: any, game: any) => game.awayTeamGoals < game.homeTeamGoals && lose + 1, 0);
+      .reduce((lose: any, game: any) => (game.homeTeamGoals > game.awayTeamGoals
+        ? lose + 1 : lose + 0), 0);
 
     switch (location) {
       case 'home':
