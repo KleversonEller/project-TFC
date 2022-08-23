@@ -7,8 +7,18 @@ export default class LeaderBoardController {
     this.service = service;
   }
 
-  public async table(req: Request, res: Response) {
-    const result = await this.service.table();
+  public async getHome(req: Request, res: Response) {
+    const result = await this.service.table('home');
+    return res.status(StatusCodes.OK).json(result);
+  }
+
+  public async getAway(req: Request, res: Response) {
+    const result = await this.service.table('away');
+    return res.status(StatusCodes.OK).json(result);
+  }
+
+  public async getAll(req: Request, res: Response) {
+    const result = await this.service.table('');
     return res.status(StatusCodes.OK).json(result);
   }
 }
