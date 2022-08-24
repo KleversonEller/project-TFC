@@ -1,8 +1,7 @@
-// import { StatusCodes } from 'http-status-codes';
-// import ErrorPersonal from '../middleware/personal.error';
 import Matches from '../database/models/matches';
 import Team from '../database/models/team';
 import Calculator from '../utils/calc.leaderboard';
+import TeamIn from '../interfaces/team.interface';
 
 export default class LeaderBoardService {
   constructor(private model = Team) {
@@ -24,7 +23,7 @@ export default class LeaderBoardService {
             attributes: ['homeTeamGoals', 'awayTeamGoals'] }],
       },
     );
-    const table = Calculator.calcOrder(result, location);
+    const table = Calculator.calcOrder(result as unknown as TeamIn[], location);
     return table;
   }
 }
